@@ -3,6 +3,7 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Services from "@/components/Services";
+import Stats from '../components/Stats';
 import About from "../components/About";
 import Testimonials from '../components/Testimonials';
 import Contact from '../components/Contact'; 
@@ -29,6 +30,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <Services />
+        <Stats />
         <About />
         <Testimonials />
         <Contact />

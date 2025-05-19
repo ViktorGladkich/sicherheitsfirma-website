@@ -1,35 +1,71 @@
 // components/About.js
 import { motion } from 'framer-motion';
-import Image from 'next/image'; // Для оптимизированных изображений
+import Image from 'next/image';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
-// Используйте свое изображение или бесплатное с unsplash.com, pexels.com
-// Поместите изображение в папку public, например, public/images/security-team.jpg
-const aboutImageUrl = '/images/image.png'; // Замените на реальный путь, если используете
+const aboutImageUrl = '/images/security-team.png'; // Убедитесь, что изображение на месте
 
 const About = () => {
-  const textContainerVariants = {
-    hidden: { opacity: 0, x: -50 },
+  // Варианты для основного заголовка секции
+  const sectionHeadingVariants = {
+    hidden: { opacity: 0, y: -30, skewX: "-5deg" },
     visible: { 
-      opacity: 1, 
-      x: 0, 
-      transition: { duration: 0.8, ease: 'easeOut', staggerChildren: 0.2 } 
-    },
+      opacity: 1, y: 0, skewX: "0deg",
+      transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 }
+    }
+  };
+  const sectionSubheadingVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, y: 0,
+      transition: { duration: 0.6, ease: "easeOut", delay: 0.3 }
+    }
   };
 
+  // Контейнер для левой части (текст)
+  const textContentContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
+    }
+  };
+
+  // Элементы внутри левой части (заголовок, параграфы, список)
+  const textItemVariants = {
+    hidden: { opacity: 0, x: -40, filter: "blur(5px)" }, // Добавим блюр
+    visible: { 
+      opacity: 1, x: 0, filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 80, damping: 15 }
+    }
+  };
+
+  // Отдельно для элементов списка преимуществ (для более тонкой анимации)
+  const featureListItemVariants = {
+    hidden: { opacity: 0, x: -30, scale: 0.9 },
+    visible: (i) => ({ // i - custom prop (индекс)
+      opacity: 1, x: 0, scale: 1,
+      transition: { 
+        type: "spring", stiffness: 120, damping: 12, 
+        // delay: i * 0.08 // Кастомная задержка, если не используем staggerChildren на UL
+      }
+    })
+  };
+  
+  // Варианты для UL списка (чтобы управлять staggerChildren для LI)
+  const featureListVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12 } }
+  };
+
+
+  // Варианты для правой части (изображение)
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.8, x: 50 },
+    hidden: { opacity: 0, scale: 0.85, rotateY: 30, transformPerspective: '1000px' }, // 3D эффект
     visible: { 
-      opacity: 1, 
-      scale: 1,
-      x: 0, 
-      transition: { duration: 0.8, ease: 'easeOut', delay: 0.2 } 
+      opacity: 1, scale: 1, rotateY: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 } // Плавный easeOutExpo и небольшая задержка
     },
-  };
-
-  const listItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
   };
 
   const features = [
@@ -43,21 +79,21 @@ const About = () => {
   return (
     <section id="about" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-14 sm:mb-16"> {/* Увеличил mb */}
           <motion.h2 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={sectionHeadingVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
             className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-4"
           >
             Wer wir sind: Ihr Partner für Sicherheit
           </motion.h2>
           <motion.p 
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={sectionSubheadingVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
             className="text-lg text-brand-darkGray max-w-3xl mx-auto"
           >
             Sicherheitsfirma Adlerauge steht für höchste Professionalität und maßgeschneiderte Sicherheitslösungen. 
@@ -65,56 +101,67 @@ const About = () => {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center"> {/* Увеличил gap */}
+          {/* Левая часть: Текстовый контент */}
           <motion.div
-            variants={textContainerVariants}
+            variants={textContentContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }} // amount 0.2 для контейнера
           >
-            <h3 className="text-2xl font-semibold text-brand-blue mb-6">Unsere Verpflichtung zu Exzellenz</h3>
-            <p className="text-brand-gray mb-6 leading-relaxed">
+            <motion.h3 
+              variants={textItemVariants} // Заголовок внутри блока
+              className="text-2xl lg:text-3xl font-semibold text-brand-blue mb-6"
+            >
+              Unsere Verpflichtung zu Exzellenz
+            </motion.h3>
+            <motion.p 
+              variants={textItemVariants} // Параграф
+              className="text-brand-gray mb-6 leading-relaxed"
+            >
               Unser Team besteht aus erfahrenen Sicherheitsexperten, die regelmäßig geschult werden, um den höchsten Standards gerecht zu werden. 
               Wir setzen auf proaktive Strategien und modernste Technologie, um Risiken zu minimieren und Ihre Werte effektiv zu schützen. 
               Vertrauen und Transparenz sind die Grundpfeiler unserer Arbeit.
-            </p>
-            <ul className="space-y-3">
+            </motion.p>
+            
+            {/* Список преимуществ */}
+            <motion.ul 
+              variants={featureListVariants} // Variants для UL для управления stagger
+              // initial и animate здесь не нужны, т.к. управляются textContentContainerVariants
+              className="space-y-3 mt-8"
+            >
               {features.map((feature, index) => (
                 <motion.li 
                   key={index} 
                   className="flex items-start"
-                  variants={listItemVariants} // Применяем к каждому элементу списка
+                  variants={featureListItemVariants} // Variants для каждого LI
+                  custom={index} // Передаем индекс для возможной кастомной задержки (если не staggerChildren)
+                  // initial и animate здесь не нужны, т.к. управляются featureListVariants
                 >
-                  <CheckCircleIcon className="h-6 w-6 text-brand-teal mr-3 flex-shrink-0 mt-1" />
+                  <CheckCircleIcon className="h-6 w-6 text-brand-teal mr-3 flex-shrink-0 mt-0.5 sm:mt-1" />
                   <span className="text-brand-darkGray">{feature}</span>
                 </motion.li>
               ))}
-            </ul>
+            </motion.ul>
           </motion.div>
 
+          {/* Правая часть: Изображение */}
           <motion.div
             variants={imageVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="rounded-lg overflow-hidden shadow-2xl"
-            // Добавим эффект параллакса при скролле для изображения (необязательно, но красиво)
-            // style={{ y: useScrollYProgress() }} // Это требует доп. настройки, пока уберем для простоты
+            className="rounded-lg overflow-hidden shadow-2xl aspect-[4/3] md:aspect-auto" // Добавил aspect-ratio для предсказуемости
           >
-            {/* 
-              Создайте папку `public` в корне проекта, если ее нет.
-              Внутри `public` создайте папку `images`.
-              Поместите изображение `security-team.jpg` (или ваше) в `public/images/`.
-              Размер изображения для примера: 800x600px.
-            */}
             <Image
               src={aboutImageUrl}
               alt="Unser Sicherheitsteam im Einsatz"
               width={800}
               height={600}
-              layout="responsive" // Адаптивное изображение
-              objectFit="cover" // Как изображение должно заполнять контейнер
+              layout="responsive"
+              objectFit="cover"
               className="transform hover:scale-105 transition-transform duration-500 ease-out"
+              priority // Если это изображение важно для LCP (Largest Contentful Paint)
             />
           </motion.div>
         </div>
