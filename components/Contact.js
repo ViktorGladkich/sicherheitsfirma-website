@@ -1,25 +1,82 @@
+// components/Contact.js
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react"; // Добавили useState для formStatus
 import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/solid";
-import AccordionItem from "./AccordionItem"; 
-import Link from "next/link"; 
+import AccordionItem from "./AccordionItem";
+import Link from "next/link";
 
 const Contact = () => {
-  const handleSubmit = (event) => {
+  // Состояние для отслеживания статуса отправки формы
+  const [formStatus, setFormStatus] = useState({
+    isSending: false,
+    message: "",
+    isError: false,
+  });
+
+  const handleSubmit = async (event) => {
+    // Сделали handleSubmit асинхронным
     event.preventDefault();
+    setFormStatus({
+      isSending: true,
+      message: "Nachricht wird gesendet...",
+      isError: false,
+    });
+
     const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Form data:", data);
-    alert(
-      "Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden."
-    );
-    event.target.reset();
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    try {
+      const response = await fetch("/api/contact", {
+        // Отправляем на наш API Route
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json(); // Получаем JSON ответ от API
+
+      if (response.ok && result.success) {
+        setFormStatus({
+          isSending: false,
+          message: result.message,
+          isError: false,
+        });
+        event.target.reset(); // Очищаем форму при успехе
+        setTimeout(
+          () =>
+            setFormStatus({ isSending: false, message: "", isError: false }),
+          6000
+        );
+      } else {
+        setFormStatus({
+          isSending: false,
+          message:
+            result.message ||
+            "Ein Fehler ist beim Senden aufgetreten. Bitte versuchen Sie es später erneut.",
+          isError: true,
+        });
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setFormStatus({
+        isSending: false,
+        message:
+          "Netzwerkfehler oder der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.",
+        isError: true,
+      });
+    }
   };
 
+  // --- Остальная часть вашего кода (refs, hooks, variants) без изменений ---
   const sectionHeaderRef = useRef(null);
   const { scrollYProgress: lineScrollYProgress } = useScroll({
     target: sectionHeaderRef,
-    offset: ["start 0.85", "start 0.1"], 
+    offset: ["start 0.85", "start 0.1"],
   });
   const pathLength = useTransform(lineScrollYProgress, [0, 1], [0, 1]);
   const opacityLine = useTransform(
@@ -28,7 +85,6 @@ const Contact = () => {
     [0, 1, 1, 0]
   );
 
-  // Варианты для заголовка и подзаголовка секции
   const sectionTitleVariants = {
     hidden: { opacity: 0, y: -25 },
     visible: {
@@ -45,8 +101,6 @@ const Contact = () => {
       transition: { duration: 0.5, ease: "easeOut", delay: 0.15 },
     },
   };
-
-  // Варианты для БЛОКА КОНТАКТНОЙ ИНФОРМАЦИИ (левый блок)
   const contactInfoBlockVariants = {
     hidden: { opacity: 0, x: -50, filter: "blur(4px)" },
     visible: {
@@ -58,14 +112,13 @@ const Contact = () => {
         stiffness: 90,
         damping: 16,
         delay: 0.1,
-        staggerChildren: 0.15, 
+        staggerChildren: 0.15,
         delayChildren: 0.1,
       },
     },
   };
-
-  // Вариант для появления каждого основного элемента в левом блоке
   const leftBlockItemVariants = {
+    // Вариант для элементов внутри левого блока
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -73,8 +126,6 @@ const Contact = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
   };
-
-  // Варианты для БЛОКА ФОРМЫ (правый блок)
   const formBlockVariants = {
     hidden: { opacity: 0, x: 50, filter: "blur(4px)" },
     visible: {
@@ -87,25 +138,27 @@ const Contact = () => {
         damping: 16,
         delay: 0.2,
         staggerChildren: 0.1,
-        delayChildren: 0.25, 
+        delayChildren: 0.25,
       },
     },
   };
-
-  // Варианты для каждого элемента ВНУТРИ формы
   const formItemVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.9 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 130, damping: 15 }, 
+      transition: { type: "spring", stiffness: 130, damping: 15 },
     },
   };
+  // --- Конец Variants ---
 
   return (
     <section id="contact" className="py-20 bg-white">
+      {" "}
+      {/* Используем bg-white для секции */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Заголовок секции с линией */}
         <div ref={sectionHeaderRef} className="text-center mb-16 relative">
           <motion.h2
             variants={sectionTitleVariants}
@@ -120,7 +173,7 @@ const Contact = () => {
             <svg
               width="100%"
               height="100%"
-              viewBox="0 0 100 4" 
+              viewBox="0 0 100 4"
               preserveAspectRatio="none"
             >
               <motion.line
@@ -132,7 +185,7 @@ const Contact = () => {
                 className="text-brand-teal"
                 strokeWidth="4"
                 strokeLinecap="round"
-                style={{ pathLength, opacity: opacityLine }} 
+                style={{ pathLength, opacity: opacityLine }}
               />
             </svg>
           </div>
@@ -149,7 +202,7 @@ const Contact = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-stretch">
-          {/* Контактная информация и Аккордеон (ЛЕВЫЙ БЛОК) */}
+          {/* Контактная информация и Аккордеон (ЛЕВЫЙ БЛОК) - ВАШ КОД ЗДЕСЬ СОХРАНЕН */}
           <motion.div
             variants={contactInfoBlockVariants}
             initial="hidden"
@@ -158,23 +211,22 @@ const Contact = () => {
             className="flex flex-col bg-brand-navy p-6 sm:p-8 rounded-xl shadow-xl text-white"
           >
             <motion.h3
-              variants={leftBlockItemVariants}
+              variants={leftBlockItemVariants} // Анимация для этого заголовка
               className="text-2xl lg:text-3xl font-semibold text-brand-teal mb-6"
             >
               Sicherheitsfirma Adlerauge
             </motion.h3>
 
-            <motion.div
-              variants={leftBlockItemVariants}
+            <motion.div // Контейнер для основных контактов
+              variants={leftBlockItemVariants} // Анимация для этого блока
               className="space-y-5 mb-8"
             >
-              {" "}
               <div className="flex items-start">
                 <MapPinIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
                 <div>
                   <p className="text-gray-100 font-semibold text-lg">
                     Standort
-                  </p>{" "}
+                  </p>
                   <p className="text-brand-gray leading-snug">
                     Musterstraße 123
                     <br />
@@ -194,6 +246,7 @@ const Contact = () => {
                   >
                     +49 (0) 123 456 7890
                   </a>
+                  {/* <p className="text-xs text-gray-400 mt-0.5">Mo - Fr: 08:00 - 18:00 Uhr</p> // Если нужны часы */}
                 </div>
               </div>
               <div className="flex items-start">
@@ -214,10 +267,9 @@ const Contact = () => {
 
             {/* Аккордеон */}
             <motion.div
-              variants={leftBlockItemVariants}
+              variants={leftBlockItemVariants} // Анимация для всего блока аккордеона
               className="space-y-px mt-auto"
             >
-              {" "}
               <AccordionItem title="Unsere Öffnungszeiten">
                 <p className="text-sm pt-2 pb-1">
                   Montag - Freitag: 08:00 - 18:00 Uhr
@@ -238,31 +290,38 @@ const Contact = () => {
                 </p>
               </AccordionItem>
               <AccordionItem title="Datenschutzhinweis">
-                  <div className="text-sm pt-2 pb-1 space-y-2 text-brand-gray">
+                <div className="text-sm pt-2 pb-1 space-y-2 text-brand-gray">
                   <p>
-                    Ihre Daten, die Sie uns über das Kontaktformular oder per E-Mail übermitteln, 
-                    werden ausschließlich zur Bearbeitung Ihrer Anfrage und für mögliche Anschlussfragen verwendet.
+                    Ihre Daten, die Sie uns über das Kontaktformular oder per
+                    E-Mail übermitteln, werden ausschließlich zur Bearbeitung
+                    Ihrer Anfrage und für mögliche Anschlussfragen verwendet.
                   </p>
                   <p>
-                    Weitere Informationen zum Umgang mit Ihren persönlichen Daten und Ihren Rechten 
-                    finden Sie in unserer <Link href="/datenschutz" className="text-brand-teal hover:underline"> Datenschutzerklärung</Link>.
+                    Weitere Informationen zum Umgang mit Ihren persönlichen
+                    Daten und Ihren Rechten finden Sie in unserer{" "}
+                    <Link
+                      href="/datenschutz"
+                      className="text-brand-teal hover:underline"
+                    >
+                      Datenschutzerklärung
+                    </Link>
+                    .
                   </p>
                 </div>
               </AccordionItem>
             </motion.div>
           </motion.div>
 
-          {/* Форма обратной связи (ПРАВЫЙ БЛОК) */}
+          {/* Форма обратной связи (ПРАВЫЙ БЛОК) - с изменениями для отправки */}
           <motion.form
             onSubmit={handleSubmit}
             variants={formBlockVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ amount: 0.1 }} 
+            viewport={{ amount: 0.1 }}
             className="space-y-6 bg-brand-navy p-8 rounded-xl shadow-xl h-full flex flex-col justify-between"
           >
             <div className="space-y-6">
-              {" "}
               <motion.div variants={formItemVariants}>
                 <label
                   htmlFor="firstName"
@@ -275,11 +334,12 @@ const Contact = () => {
                   name="firstName"
                   id="firstName"
                   required
+                  disabled={formStatus.isSending}
                   whileFocus={{
                     scale: 1.02,
                     boxShadow: "0px 0px 8px rgba(44, 165, 141, 0.3)",
                   }}
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all"
+                  className="mt-1 block w-full px-3 py-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all disabled:opacity-70"
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
@@ -294,11 +354,12 @@ const Contact = () => {
                   name="lastName"
                   id="lastName"
                   required
+                  disabled={formStatus.isSending}
                   whileFocus={{
                     scale: 1.02,
                     boxShadow: "0px 0px 8px rgba(44, 165, 141, 0.3)",
                   }}
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all"
+                  className="mt-1 block w-full px-3 py-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all disabled:opacity-70"
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
@@ -313,11 +374,12 @@ const Contact = () => {
                   name="email"
                   id="email"
                   required
+                  disabled={formStatus.isSending}
                   whileFocus={{
                     scale: 1.02,
                     boxShadow: "0px 0px 8px rgba(44, 165, 141, 0.3)",
                   }}
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all"
+                  className="mt-1 block w-full px-3 py-2.5 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all disabled:opacity-70"
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
@@ -332,28 +394,44 @@ const Contact = () => {
                   id="message"
                   rows="5"
                   required
+                  disabled={formStatus.isSending}
                   whileFocus={{
                     scale: 1.01,
                     boxShadow: "0px 0px 8px rgba(44, 165, 141, 0.3)",
                   }}
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all"
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-brand-teal sm:text-sm transition-all disabled:opacity-70"
                 ></motion.textarea>
               </motion.div>
             </div>
             <motion.div variants={formItemVariants} className="mt-auto">
               <motion.button
                 type="submit"
-                whileHover={{
-                  scale: 1.05,
-                  backgroundColor: "#258A74",
-                  boxShadow: "0px 5px 15px rgba(44, 165, 141, 0.4)",
-                }}
-                whileTap={{ scale: 0.95 }}
+                disabled={formStatus.isSending}
+                whileHover={
+                  !formStatus.isSending
+                    ? {
+                        scale: 1.05,
+                        backgroundColor: "#258A74",
+                        boxShadow: "0px 5px 15px rgba(44, 165, 141, 0.4)",
+                      }
+                    : {}
+                }
+                whileTap={!formStatus.isSending ? { scale: 0.95 } : {}}
                 transition={{ duration: 0.2 }}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-brand-teal focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-teal focus:ring-offset-brand-navy"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-brand-teal focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-teal focus:ring-offset-brand-navy disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Nachricht Senden
+                {formStatus.isSending ? "Wird gesendet..." : "Nachricht Senden"}
               </motion.button>
+              {formStatus.message && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5, transition: { duration: 0.2 } }}
+                  className={`mt-4 text-sm text-center ${formStatus.isError ? "text-red-400" : "text-green-400"}`} // Цвета для темного фона формы
+                >
+                  {formStatus.message}
+                </motion.p>
+              )}
             </motion.div>
           </motion.form>
         </div>
