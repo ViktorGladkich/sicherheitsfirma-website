@@ -1,5 +1,5 @@
-// components/Testimonials.js
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react'; 
 import TestimonialCard from './TestimonialCard';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -7,7 +7,7 @@ import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/module
 
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination'; // Важно для работы пагинации
+import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-coverflow';
 
@@ -19,45 +19,75 @@ const testimonialsData = [
   { name: 'Dr. Eva Lang', role: 'Ärztin, Hamburg', text: 'Höchste Professionalität und Diskretion. Die Sicherheitsanalyse für meine Praxis war sehr aufschlussreich und die Umsetzung der Maßnahmen perfekt.', avatar: null, }
 ];
 
-// Варианты анимации (эти не менялись и должны быть у вас)
 const sectionHeadingVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0 },
   visible: { 
-    opacity: 1, y: 0,
-    transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.15, delayChildren: 0.1 } 
+    opacity: 1, 
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 } 
   }
 };
+
 const headingItemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  hidden: { opacity: 0, y: 20 }, 
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 14 } } // Чуть изменил пружину
 };
+
 const swiperMotionContainerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
         opacity: 1, y: 0,
-        transition: { duration: 0.5, delay: 0.2, ease: "easeOut" }
+        transition: { duration: 0.5, delay: 0.3, ease: "easeOut" } 
     }
 };
 
 const Testimonials = () => {
+  // --- Логика для Scroll-linked анимации линии под заголовком секции ---
+  const sectionHeaderRef = useRef(null); 
+  const { scrollYProgress: lineScrollYProgress } = useScroll({
+    target: sectionHeaderRef,
+    offset: ["start 0.85", "start 0.1"] 
+  });
+
+  const pathLength = useTransform(lineScrollYProgress, [0, 1], [0, 1]); 
+  const opacity = useTransform(lineScrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]); 
+
   return (
     <section id="testimonials" className="py-20 bg-brand-lightGray overflow-x-hidden"> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          variants={sectionHeadingVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          <motion.h2 variants={headingItemVariants} className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-4">
-            Was unsere Kunden sagen
-          </motion.h2>
-          <motion.p variants={headingItemVariants} className="text-lg text-brand-darkGray max-w-2xl mx-auto">
-            Vertrauen und Zufriedenheit unserer Klienten stehen für uns an erster Stelle.
-          </motion.p>
-        </motion.div>
+        <div ref={sectionHeaderRef} className="relative text-center mb-12 sm:mb-16">
+            <motion.div 
+                variants={sectionHeadingVariants} initial="hidden" whileInView="visible" viewport={{ amount: 0.2 }}
+            >
+                <motion.h2 variants={headingItemVariants} className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-2">
+                    Was unsere Kunden sagen
+                </motion.h2>
+                
+                {/* Анимированная SVG линия */}
+                <div className="max-w-[800px] h-[4px] mx-auto mb-3 overflow-hidden"> {/* Уменьшил ширину и высоту линии */}
+                    <svg width="100%" height="100%" viewBox="0 0 100 4" preserveAspectRatio="none">
+                        <motion.line
+                        x1="0" y1="2" x2="100" y2="2" 
+                        stroke="currentColor"
+                        className="text-brand-teal"
+                        strokeWidth="4" 
+                        strokeLinecap="round"
+                        style={{ 
+                            pathLength: pathLength, 
+                            opacity: opacity        
+                        }}
+                        />
+                    </svg>
+                </div>
+
+                <motion.p variants={headingItemVariants} className="text-lg text-brand-darkGray max-w-2xl mx-auto">
+                    Vertrauen und Zufriedenheit unserer Klienten stehen für uns an erster Stelle.
+                </motion.p>
+            </motion.div>
+        </div>
       </div>
 
       <motion.div
-          variants={swiperMotionContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
+          variants={swiperMotionContainerVariants} initial="hidden" whileInView="visible" viewport={{ amount: 0.1 }}
           className="relative px-4 sm:px-0"
       >
         <Swiper
@@ -68,9 +98,9 @@ const Testimonials = () => {
           loop={true}
           slidesPerView={1.4}
           breakpoints={{
-              640: { slidesPerView: 2.2, },
-              1024: { slidesPerView: 3, },
-              1280: { slidesPerView: 3.5, }
+              640: { slidesPerView: 1.8, },
+              1024: { slidesPerView: 2.5, },
+              1280: { slidesPerView: 2.8, }
           }}
           autoplay={{ delay: 4500, disableOnInteraction: false }}
           coverflowEffect={{
@@ -80,14 +110,11 @@ const Testimonials = () => {
             modifier: 1,     
             slideShadows: false,
           }}
-          // ИСПРАВЛЕННАЯ ПАГИНАЦИЯ
           pagination={{ 
               clickable: true,
-              bulletClass: 'swiper-pagination-bullet-custom', // Базовый класс
-              bulletActiveClass: 'swiper-pagination-bullet-active-custom', // Класс для активного
+              bulletClass: 'swiper-pagination-bullet-custom',
+              bulletActiveClass: 'swiper-pagination-bullet-active-custom',
               renderBullet: function (index, className) { 
-                  // className теперь 'swiper-pagination-bullet-custom'
-                  // Swiper добавит 'swiper-pagination-bullet-active-custom' к активному
                   return `<span class="${className} bg-brand-gray w-2.5 h-2.5 rounded-full inline-block mx-1.5 cursor-pointer transition-all duration-300 hover:bg-brand-teal/70"></span>`;
               }
           }}
@@ -120,7 +147,6 @@ const Testimonials = () => {
             </svg>
         </div>
       </motion.div>
-      {/* Стили jsx global с исправлением для активного буллета */}
       <style jsx global>{`
         .testimonial-swiper {
           overflow: visible !important; 
@@ -139,15 +165,13 @@ const Testimonials = () => {
           filter: blur(0px);
           z-index: 10 !important;
         }
-        /* Базовый стиль для буллетов уже задан через Tailwind в renderBullet */
-        /* Стиль для активного буллета */
-        .testimonial-swiper .swiper-pagination-bullet-active-custom { /* Используем наш кастомный класс */
+        .testimonial-swiper .swiper-pagination-bullet-custom {
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out, background-color 0.2s ease-out !important;
+        }
+        .testimonial-swiper .swiper-pagination-bullet-active-custom { 
             background-color: #2CA58D !important; /* brand.teal */
             opacity: 1 !important;
             transform: scale(1.3);
-        }
-        .testimonial-swiper .swiper-pagination-bullet-custom { /* Общий класс для всех наших буллетов */
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out, background-color 0.2s ease-out !important;
         }
       `}</style>
     </section>

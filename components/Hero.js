@@ -1,4 +1,3 @@
-// components/Hero.js
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 import { useEffect, useRef, useState, useCallback } from 'react';
@@ -51,15 +50,12 @@ const Hero = () => {
 
   const transformContentX = useTransform(springMouseX, (val) => val / 50);
   const transformContentY = useTransform(springMouseY, (val) => val / 40);
-  // --- Конец кода для параллакса контента ---
-
   // --- Код для частиц ---
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
 
   const particlesLoaded = useCallback(async (container) => {
-    // await console.log(container); 
   }, []);
 
   const particlesOptions = {
@@ -87,30 +83,30 @@ const Hero = () => {
             opacity: 0.7,
           }
         },
-        bubble: { // Полная конфигурация bubble
+        bubble: { 
           distance: 200,
           size: 20,
           duration: 2,
           opacity: 0.8,
         },
-        repulse: { // Полная конфигурация repulse
+        repulse: { 
           distance: 100,
           duration: 0.4,
         },
         push: {
           quantity: 2,
         },
-        remove: { // Полная конфигурация remove
+        remove: { 
           quantity: 2,
         },
       },
     },
-    particles: { // Полная конфигурация particles
+    particles: { 
       color: {
-        value: '#2CA58D', // brand.teal
+        value: '#2CA58D', 
       },
       links: {
-        color: '#A0AEC0', // brand.gray
+        color: '#A0AEC0', 
         distance: 150,
         enable: true,
         opacity: 0.4,
@@ -160,7 +156,6 @@ const Hero = () => {
     },
     detectRetina: true,
   };
-  // --- Конец кода для частиц ---
 
   // --- Варианты анимации Framer Motion для контента ---
   const containerVariants = {
@@ -195,7 +190,6 @@ const Hero = () => {
     },
     tap: { scale: 0.9 }
   };
-  // --- Конец вариантов анимации ---
 
   return (
     <section 

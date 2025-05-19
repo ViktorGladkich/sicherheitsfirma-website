@@ -1,18 +1,19 @@
-// components/Navbar.js
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const Navbar = () => {
+const Navbar = ({ activeSectionId, onNavItemClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
-    { name: "Startseite", href: "#home" },
-    { name: "Dienstleistungen", href: "#services" },
-    { name: "Über Uns", href: "#about" },
-    { name: "Kontakt", href: "#contact" },
+    { id: "home", name: "Startseite", href: "#home" },
+    { id: "services", name: "Dienstleistungen", href: "#services" },
+    { id: "stats", name: "Statistiken", href: "#stats" },
+    { id: "about", name: "Über Uns", href: "#about" },
+    { id: "testimonials", name: "Kunden", href: "#testimonials" },
+    { id: "contact", name: "Kontakt", href: "#contact" },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -87,6 +88,7 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
+          {/* Logo */}
           <motion.div
             variants={logoVariants}
             initial="hidden"
@@ -94,17 +96,18 @@ const Navbar = () => {
             className="flex-shrink-0"
           >
             <Link href="#home" className="flex items-center">
-            <Image
-    src="/images/LogotipAxma.webp" 
-    alt="Логотип"
-    width={80}
-    height={80}
-    className="object-contain"
-    priority
-  />
+              <Image
+                src="/images/LogotipAxma.webp"
+                alt="Логотип"
+                width={80}
+                height={80}
+                className="object-contain"
+                priority
+              />
             </Link>
           </motion.div>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <motion.ul
               className="ml-10 flex items-baseline space-x-1 sm:space-x-2"
@@ -114,14 +117,18 @@ const Navbar = () => {
             >
               {navItems.map((item) => (
                 <motion.li
-                  key={item.name}
+                  key={item.id}
                   variants={navItemLiVariants}
                   whileHover="hover"
                 >
-                  <Link href={item.href}>
+                  <Link href={item.href} onClick={() => onNavItemClick(item.id)}>
                     <motion.span
                       variants={navLinkTextVariants}
-                      className="text-gray-300 px-3 py-2.5 rounded-md text-base font-medium block hover:bg-brand-blue/30 transition-colors duration-150"
+                      className={`relative px-3 py-2.5 text-base font-medium block transition-colors duration-150 after:absolute after:bottom-1 after:left-0 after:h-[2px] after:rounded-full after:transition-all after:duration-300 ${
+                        activeSectionId === item.id
+                          ? "text-white after:w-full after:bg-brand-teal"
+                          : "text-gray-300 hover:text-white after:w-0 hover:after:w-full after:bg-brand-teal"
+                      }`}
                     >
                       {item.name}
                     </motion.span>
@@ -131,7 +138,7 @@ const Navbar = () => {
             </motion.ul>
           </div>
 
-          {/* Анимированная бургер-кнопка */}
+          {/* Hamburger Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
@@ -180,7 +187,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Мобильное меню */}
+      {/* Mobile Menu */}
       <motion.div
         className={`md:hidden ${isOpen ? "block" : "hidden"} bg-brand-navy border-t border-brand-blue`}
         initial="closed"
@@ -189,11 +196,18 @@ const Navbar = () => {
       >
         <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navItems.map((item) => (
-            <motion.li key={item.name} variants={mobileNavItemVariants}>
+            <motion.li key={item.id} variants={mobileNavItemVariants}>
               <Link
                 href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="text-gray-300 hover:bg-brand-teal hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-all"
+                onClick={() => {
+                  onNavItemClick(item.id);
+                  setIsOpen(false);
+                }}
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
+                  activeSectionId === item.id
+                    ? "text-white bg-brand-teal"
+                    : "text-gray-300 hover:bg-brand-teal hover:text-white"
+                }`}
               >
                 {item.name}
               </Link>

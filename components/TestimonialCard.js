@@ -1,9 +1,7 @@
-// components/TestimonialCard.js
 import { motion } from 'framer-motion';
 import { UserCircleIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'; // Иконки для аватара и цитаты
 
 const TestimonialCard = ({ name, role, text, avatar }) => {
-  // avatar может быть URL к изображению или null для использования UserCircleIcon
   return (
     <div className="bg-white p-8 rounded-xl shadow-xl h-full flex flex-col"> {/* h-full для одинаковой высоты в карусели */}
       <div className="flex-grow mb-6">

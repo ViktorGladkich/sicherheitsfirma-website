@@ -16,7 +16,7 @@ function AnimatedStat({ target, suffix, isInView }) {
   useEffect(() => {
     if (isInView) {
       const controls = animate(0, target, {
-        duration: 2,
+        duration: 3,
         ease: "easeOut",
         onUpdate: (latest) => {
           setCount(Math.round(latest));

@@ -1,148 +1,219 @@
-// components/About.js
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import Image from "next/image";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import AccordionItem from './AccordionItem';
 
-const aboutImageUrl = '/images/security-team.png'; // Убедитесь, что изображение на месте
+const aboutImageUrl = "/images/security-team.png";
+const unsereWerteData = [
+  {
+    title: "Professionalität",
+    content: "Höchste Standards in Ausbildung und Durchführung aller unserer Sicherheitsdienstleistungen. Regelmäßige Schulungen und Zertifizierungen unserer Mitarbeiter sind für uns selbstverständlich."
+  },
+  {
+    title: "Integrität",
+    content: "Ehrliches, ethisches und transparentes Handeln bildet die Grundlage unserer Beziehungen zu Kunden, Mitarbeitern und Partnern. Auf uns können Sie sich verlassen."
+  },
+  {
+    title: "Zuverlässigkeit",
+    content: "Wir sind da, wenn Sie uns brauchen – 24 Stunden am Tag, 7 Tage die Woche. Pünktlichkeit, Engagement und die konsequente Einhaltung von Absprachen zeichnen uns aus."
+  },
+  {
+    title: "Diskretion",
+    content: "Vertraulichkeit und der Schutz Ihrer Privatsphäre sowie sensibler Informationen sind für uns von höchster Bedeutung in allen Aspekтах unserer Arbeit."
+  },
+  {
+    title: "Innovation",
+    content: "Stetige Anpassung an neue Sicherheitsherausforderungen durch den Einsatz moderner Technologien und die kontinuierliche Weiterentwicklung unserer Methoden und Prozesse."
+  }
+];
 
 const About = () => {
-  // Варианты для основного заголовка секции
   const sectionHeadingVariants = {
-    hidden: { opacity: 0, y: -30, skewX: "-5deg" },
-    visible: { 
-      opacity: 1, y: 0, skewX: "0deg",
-      transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 }
-    }
+    hidden: { opacity: 0, y: -30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transform: "skewX(0deg)",
+      transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 },
+    },
   };
   const sectionSubheadingVariants = {
     hidden: { opacity: 0, y: -20 },
-    visible: { 
-      opacity: 1, y: 0,
-      transition: { duration: 0.6, ease: "easeOut", delay: 0.3 }
-    }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut", delay: 0.25 },
+    },
   };
-
-  // Контейнер для левой части (текст)
-  const textContentContainerVariants = {
+  const leftTextColumnVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
-    }
+      transition: {
+        staggerChildren: 0.25,
+        delayChildren: 0.2,
+      },
+    },
   };
-
-  // Элементы внутри левой части (заголовок, параграфы, список)
-  const textItemVariants = {
-    hidden: { opacity: 0, x: -40, filter: "blur(5px)" }, // Добавим блюр
-    visible: { 
-      opacity: 1, x: 0, filter: "blur(0px)",
-      transition: { type: "spring", stiffness: 80, damping: 15 }
-    }
+  const contentSubSectionVariants = {
+    hidden: { opacity: 0, x: -40, filter: "blur(3px)" },
+    visible: {
+      opacity: 1,
+      x: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        stiffness: 90,
+        damping: 16,
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
   };
-
-  // Отдельно для элементов списка преимуществ (для более тонкой анимации)
-  const featureListItemVariants = {
-    hidden: { opacity: 0, x: -30, scale: 0.9 },
-    visible: (i) => ({ // i - custom prop (индекс)
-      opacity: 1, x: 0, scale: 1,
-      transition: { 
-        type: "spring", stiffness: 120, damping: 12, 
-        // delay: i * 0.08 // Кастомная задержка, если не используем staggerChildren на UL
-      }
-    })
+  const innerContentItemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.5, ease: "circOut" },
+    },
   };
-  
-  // Варианты для UL списка (чтобы управлять staggerChildren для LI)
-  const featureListVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.12 } }
-  };
-
-
-  // Варианты для правой части (изображение)
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.85, rotateY: 30, transformPerspective: '1000px' }, // 3D эффект
-    visible: { 
-      opacity: 1, scale: 1, rotateY: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 } // Плавный easeOutExpo и небольшая задержка
+    hidden: {
+      opacity: 0,
+      scale: 0.85,
+      rotateY: 25,
+      x: 50,
+      transformPerspective: "1000px",
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      x: 0,
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 },
     },
   };
 
-  const features = [
-    "Lizenzierte und geschulte Sicherheitsexperten",
-    "Modernste Technologie und Ausrüstung",
-    "Individuelle Sicherheitskonzepte",
-    "24/7 Erreichbarkeit und schneller Einsatz",
-    "Strikte Diskretion und Zuverlässigkeit"
-  ];
+
+  // --- Логика для Scroll-linked анимации линии ---
+  const sectionHeaderRef = useRef(null);
+  const { scrollYProgress: lineScrollYProgress } = useScroll({
+    target: sectionHeaderRef,
+    offset: ["start 0.85", "start 0.1"],
+  });
+  const pathLength = useTransform(lineScrollYProgress, [0, 1], [0, 1]);
+  const opacityLine = useTransform(
+    lineScrollYProgress,
+    [0, 0.1, 0.9, 1],
+    [0, 1, 1, 0]
+  );
 
   return (
     <section id="about" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14 sm:mb-16"> {/* Увеличил mb */}
-          <motion.h2 
+        <div
+          ref={sectionHeaderRef}
+          className="text-center mb-14 sm:mb-16 relative"
+        >
+          <motion.h2
             variants={sectionHeadingVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ amount: 0.3 }}
+            style={{ transform: "skewX(-5deg)" }}
             className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-4"
           >
             Wer wir sind: Ihr Partner für Sicherheit
           </motion.h2>
-          <motion.p 
+          <div className="max-w-[800px] h-[5px] mx-auto mb-3 overflow-hidden">
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 120 5"
+              preserveAspectRatio="none"
+            >
+              <motion.line
+                x1="0"
+                y1="2.5"
+                x2="120"
+                y2="2.5"
+                stroke="currentColor"
+                className="text-brand-teal"
+                strokeWidth="5"
+                strokeLinecap="round"
+                style={{ pathLength: pathLength, opacity: opacityLine }}
+              />
+            </svg>
+          </div>
+          <motion.p
             variants={sectionSubheadingVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ amount: 0.3 }}
             className="text-lg text-brand-darkGray max-w-3xl mx-auto"
           >
-            Sicherheitsfirma Adlerauge steht für höchste Professionalität und maßgeschneiderte Sicherheitslösungen. 
-            Wir verstehen die einzigartigen Anforderungen des deutschen Marktes und bieten Ihnen Schutz, auf den Sie sich verlassen können.
+            Sicherheit ist Vertrauenssache. Deshalb setzen wir auf transparente
+            Kommunikation, individuelle Beratung und partnerschaftliche
+            Zusammenarbeit – für Lösungen, die wirklich schützen.
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center"> {/* Увеличил gap */}
-          {/* Левая часть: Текстовый контент */}
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
           <motion.div
-            variants={textContentContainerVariants}
+            variants={leftTextColumnVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }} // amount 0.2 для контейнера
+            viewport={{ amount: 0.1 }}
           >
-            <motion.h3 
-              variants={textItemVariants} // Заголовок внутри блока
-              className="text-2xl lg:text-3xl font-semibold text-brand-blue mb-6"
+            {/* Подсекция: Наша Миссия */}
+            <motion.div
+              variants={contentSubSectionVariants}
+              style={{ filter: "blur(4px)" }}
+              className="mb-8"
             >
-              Unsere Verpflichtung zu Exzellenz
-            </motion.h3>
-            <motion.p 
-              variants={textItemVariants} // Параграф
-              className="text-brand-gray mb-6 leading-relaxed"
+              <motion.h3
+                variants={innerContentItemVariants}
+                className="text-2xl lg:text-3xl font-semibold text-brand-blue mb-4"
+              >
+                Unsere Mission
+              </motion.h3>
+              <motion.p
+                variants={innerContentItemVariants}
+                className="text-darkGray leading-relaxed"
+              >
+                Unsere Mission ist es, durch proaktive Sicherheitsmaßnahmen und
+                den Einsatz modernster Technologien ein Höchstmaß an Sicherheit
+                für unsere Kunden zu gewährleisten. Wir streben danach,
+                Bedrohungen frühzeitig zu erkennen und Risiken effektiv zu
+                minimieren, um Menschen, Werte und Reputation zu schützen.
+              </motion.p>
+            </motion.div>
+
+            {/* Подсекция: Наши Ценности */}
+            <motion.div
+              variants={contentSubSectionVariants}
+              style={{ filter: "blur(4px)" }}
+              className="mb-8"
             >
-              Unser Team besteht aus erfahrenen Sicherheitsexperten, die regelmäßig geschult werden, um den höchsten Standards gerecht zu werden. 
-              Wir setzen auf proaktive Strategien und modernste Technologie, um Risiken zu minimieren und Ihre Werte effektiv zu schützen. 
-              Vertrauen und Transparenz sind die Grundpfeiler unserer Arbeit.
-            </motion.p>
-            
-            {/* Список преимуществ */}
-            <motion.ul 
-              variants={featureListVariants} // Variants для UL для управления stagger
-              // initial и animate здесь не нужны, т.к. управляются textContentContainerVariants
-              className="space-y-3 mt-8"
-            >
-              {features.map((feature, index) => (
-                <motion.li 
-                  key={index} 
-                  className="flex items-start"
-                  variants={featureListItemVariants} // Variants для каждого LI
-                  custom={index} // Передаем индекс для возможной кастомной задержки (если не staggerChildren)
-                  // initial и animate здесь не нужны, т.к. управляются featureListVariants
-                >
-                  <CheckCircleIcon className="h-6 w-6 text-brand-teal mr-3 flex-shrink-0 mt-0.5 sm:mt-1" />
-                  <span className="text-brand-darkGray">{feature}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
+              <motion.h3
+                variants={innerContentItemVariants}
+                className="text-2xl lg:text-3xl font-semibold text-brand-blue mb-3"
+              >
+                Unsere Werte
+              </motion.h3>
+              <motion.div variants={innerContentItemVariants} className="space-y-1"> 
+                {unsereWerteData.map((wert, index) => (
+                  <AccordionItem key={index} title={wert.title} initiallyOpen={index === 0}> {/* Первый элемент открыт по умолчанию */}
+                    <p className="text-sm text-brand-darkGray py-2"> {/* Добавил padding для текста в аккордеоне */}
+                      {wert.content}
+                    </p>
+                  </AccordionItem>
+                ))}
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           {/* Правая часть: Изображение */}
@@ -150,18 +221,16 @@ const About = () => {
             variants={imageVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="rounded-lg overflow-hidden shadow-2xl aspect-[4/3] md:aspect-auto" // Добавил aspect-ratio для предсказуемости
+            viewport={{ amount: 0.3 }}
+            className="relative rounded-lg overflow-hidden shadow-2xl w-full h-72 sm:h-80 md:h-96 lg:h-[480px]"
           >
             <Image
               src={aboutImageUrl}
               alt="Unser Sicherheitsteam im Einsatz"
-              width={800}
-              height={600}
-              layout="responsive"
-              objectFit="cover"
-              className="transform hover:scale-105 transition-transform duration-500 ease-out"
-              priority // Если это изображение важно для LCP (Largest Contentful Paint)
+              fill
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+              priority={false}
             />
           </motion.div>
         </div>

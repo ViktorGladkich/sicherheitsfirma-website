@@ -5,8 +5,6 @@ import { ArrowUpIcon } from '@heroicons/react/24/solid';
 
 const BackToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
-
-  // Показать кнопку, когда страница прокручена (например, на 300px)
   const toggleVisibility = () => {
     if (window.pageYOffset > 300) {
       setIsVisible(true);
@@ -14,8 +12,6 @@ const BackToTopButton = () => {
       setIsVisible(false);
     }
   };
-
-  // Плавная прокрутка наверх
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -25,53 +21,41 @@ const BackToTopButton = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
-    // Очистка слушателя при размонтировании компонента
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
     };
-  }, []); // Пустой массив зависимостей означает, что эффект запустится один раз после монтирования
+  }, []); 
 
   const buttonVariants = {
-    initial: { opacity: 0, y: 25, scale: 0.85 }, // Начальное состояние (скрыто)
+    initial: { opacity: 0, y: 25, scale: 0.85 }, 
     animate: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 18 }, // Анимация появления
+      transition: { type: "spring", stiffness: 200, damping: 18 },
     },
     exit: {
       opacity: 0,
       y: 25,
       scale: 0.85,
-      transition: { duration: 0.25, ease: "easeOut" }, // Анимация исчезновения
+      transition: { duration: 0.25, ease: "easeOut" }, 
     },
     hover: {
-      // Состояние при наведении на кнопку
       scale: 1.12,
-      boxShadow: "0px 5px 20px rgba(44, 165, 141, 0.45)", // brand.teal с альфа
-      // transition здесь не нужен, Framer Motion сам плавно перейдет
+      boxShadow: "0px 5px 20px rgba(44, 165, 141, 0.45)", 
     },
-    // tap состояние будет применено через whileTap пропс напрямую
   };
 
   const iconVariants = {
-    // initial состояние для иконки не нужно, т.к. она всегда видима, если кнопка видима
     hover: {
-      // Это состояние будет применено к иконке, когда родитель (кнопка) в состоянии hover
-      y: [0, -4, 0, -2, 0], // Эффект "подпрыгивания"
+      y: [0, -4, 0, -2, 0], 
       transition: {
         duration: 0.8,
         ease: "easeInOut",
-        repeat: Infinity, // Повторять анимацию, пока наведено
+        repeat: Infinity, 
         repeatType: "loop",
       },
     },
-    // Если нужно вернуть иконку в исходное положение, когда hover заканчивается,
-    // Framer Motion сделает это автоматически, если у иконки есть 'initial' или 'animate' состояние без смещения по Y.
-    // В данном случае, когда hover кнопки заканчивается, анимация иконки просто остановится.
-    // Для явного возврата, можно определить 'animate' состояние для иконки:
-    // animate: { y: 0, transition: { duration: 0.2 } }
-    // Но это усложнит, проще оставить как есть - анимация прервется.
   };
 
   return (
@@ -88,15 +72,11 @@ const BackToTopButton = () => {
           whileTap={{
             scale: 0.95,
             boxShadow: "0px 2px 10px rgba(44, 165, 141, 0.3)",
-          }} // Эффект при нажатии
+          }} 
           aria-label="Наверх"
         >
-          {/* Оборачиваем иконку в motion.div, чтобы применить к ней свои variants */}
           <motion.div
             variants={iconVariants}
-            // initial="initial" // Необязательно, если нет специфичного начального состояния для иконки
-            // animate="animate"   // Необязательно, если нет специфичного анимированного состояния для иконки
-            // Hover-анимация иконки будет активирована через whileHover родительской кнопки
           >
             <ArrowUpIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           </motion.div>

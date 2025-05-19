@@ -1,4 +1,3 @@
-/* styles/globals.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -11,9 +10,9 @@ body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #FFFFFF; /* Белый фон по умолчанию */
-  color: #1A202C; /* Темно-серый текст по умолчанию */
-  scroll-behavior: smooth; /* Плавный скролл */
+  background-color: #FFFFFF; 
+  color: #1A202C; 
+  scroll-behavior: smooth; 
 }
 
 a {
@@ -33,9 +32,9 @@ a {
   background: #f1f1f1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #A0AEC0; /* brand-gray */
+  background: #A0AEC0; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #718096; /* Более темный серый при наведении */
+  background: #718096; 
 }
