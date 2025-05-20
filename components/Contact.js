@@ -127,20 +127,16 @@ const Contact = () => {
     },
   };
   const formBlockVariants = {
-    hidden: { opacity: 0, x: 50, filter: "blur(4px)" },
-    visible: {
-      opacity: 1,
-      x: 0,
-      filter: "blur(0px)",
-      transition: {
-        type: "spring",
-        stiffness: 90,
-        damping: 16,
-        delay: 0.2,
-        staggerChildren: 0.1,
-        delayChildren: 0.25,
-      },
-    },
+    hidden: { opacity: 0, x: -50, filter: "blur(4px)" },
+  visible: { 
+    opacity: 1, x: 0, filter: "blur(0px)",    
+    transition: { 
+      default: { type: "spring", stiffness: 90, damping: 16, delay: 0.1 }, 
+      filter: { duration: 0.4, ease: "easeOut", delay: 0.1 }, 
+      staggerChildren: 0.12, 
+      delayChildren: 0.3 
+    }
+  }
   };
   const formItemVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.9 },

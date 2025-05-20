@@ -4,10 +4,10 @@ import { useInView } from 'react-intersection-observer';
 import { UsersIcon, ShieldCheckIcon, CalendarDaysIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 
 const statsData = [
-  { to: 12, icon: CalendarDaysIcon, label: 'Jahre Erfahrung' },
+  { to: 5, icon: CalendarDaysIcon, label: 'Jahre Erfahrung' },
   { to: 500, icon: UsersIcon, label: 'Zufriedene Kunden', suffix: '+' },
-  { to: 1000, icon: ShieldCheckIcon, label: 'Erfolgreiche Einsätze', suffix: '+' },
-  { to: 80, icon: BuildingOfficeIcon, label: 'Geschützte Objekte', suffix: '+' },
+  { to: 800, icon: ShieldCheckIcon, label: 'Erfolgreiche Einsätze', suffix: '+' },
+  { to: 90, icon: BuildingOfficeIcon, label: 'Geschützte Objekte', suffix: '+' },
 ];
 
 function AnimatedStat({ target, suffix, isInView }) {
