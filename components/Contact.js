@@ -1,7 +1,14 @@
 // components/Contact.js
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react"; // Добавили useState для formStatus
-import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/solid";
+import { useRef, useState } from "react";
+import { 
+  EnvelopeIcon, 
+  MapPinIcon, 
+  PhoneIcon,
+  UserIcon,
+  UserCircleIcon, 
+  ChatBubbleLeftEllipsisIcon, 
+  PencilSquareIcon } from "@heroicons/react/24/solid";
 import AccordionItem from "./AccordionItem";
 import Link from "next/link";
 
@@ -319,10 +326,8 @@ const Contact = () => {
           >
             <div className="space-y-6">
               <motion.div variants={formItemVariants}>
-                <label
-                  htmlFor="firstName"
-                  className="block text-lg font-medium text-brand-teal"
-                >
+              <label htmlFor="firstName" className="flex items-center text-lg font-medium text-brand-teal mb-1">
+              <UserIcon className="w-5 h-5 mr-2 text-brand-teal/80" /> 
                   Ihr Vorname
                 </label>
                 <motion.input
@@ -339,10 +344,8 @@ const Contact = () => {
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
-                <label
-                  htmlFor="lastName"
-                  className="block text-lg font-medium text-brand-teal"
-                >
+              <label htmlFor="lastName" className="flex items-center text-lg font-medium text-brand-teal mb-1">
+              <UserCircleIcon className="w-5 h-5 mr-2 text-brand-teal/80" />
                   Ihr Nachname
                 </label>
                 <motion.input
@@ -359,10 +362,8 @@ const Contact = () => {
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
-                <label
-                  htmlFor="email"
-                  className="block text-lg font-medium text-brand-teal"
-                >
+              <label htmlFor="email" className="flex items-center text-lg font-medium text-brand-teal mb-1">
+              <EnvelopeIcon className="w-5 h-5 mr-2 text-brand-teal/80" /> 
                   Ihre E-Mail-Adresse
                 </label>
                 <motion.input
@@ -379,10 +380,8 @@ const Contact = () => {
                 />
               </motion.div>
               <motion.div variants={formItemVariants}>
-                <label
-                  htmlFor="message"
-                  className="block text-lg font-medium text-brand-teal"
-                >
+              <label htmlFor="message" className="flex items-center text-lg font-medium text-brand-teal mb-1">
+              <ChatBubbleLeftEllipsisIcon className="w-5 h-5 mr-2 text-brand-teal/80" /> 
                   Ihre Nachricht
                 </label>
                 <motion.textarea
