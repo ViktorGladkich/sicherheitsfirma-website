@@ -4,11 +4,14 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export default function DatenschutzPage() {
+  const pageTitle = "Datenschutzerklärung - Axma Sicherheitsdienst";
+  const siteUrl = "https://[ВАШ_БУДУЩИЙ_ДОМЕН].de/datenschutz";
   return (
     <>
       <Head>
-        <title>Datenschutzerklärung - Sicherheitsfirma Adlerauge</title>
-        <meta name="robots" content="noindex, follow" />
+      <title>{pageTitle}</title>
+      <meta name="robots" content="noindex, follow" />
+      <link rel="canonical" href={siteUrl} />
       </Head>
       <Navbar />
       <main className="pt-24 pb-12 bg-brand-lightGray min-h-screen">
@@ -81,7 +84,7 @@ export default function DatenschutzPage() {
                 Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL-bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von “http://” auf “https://” wechselt und an dem Schloss-Symbol in Ihrer Browserzeile. Wenn die SSL- bzw. TLS-Verschlüsselung aktiviert ist, können die Daten, die Sie an uns übermitteln, nicht von Dritten mitgelesen werden.
               </p>
             </section>
-            {/* ... другие необходимые разделы ... */}
+            
           </div>
         </div>
       </main>

@@ -195,7 +195,7 @@ const Hero = () => {
     <section 
       id="home" 
       ref={heroRef} 
-      className="relative min-h-screen flex items-center justify-center bg-brand-navy text-white overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center text-white overflow-hidden animated-hero-gradient" 
     >
       <div className="absolute inset-0 z-0">
         <Particles

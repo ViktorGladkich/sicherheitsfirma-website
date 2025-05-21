@@ -4,11 +4,15 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export default function ImpressumPage() {
+  const pageTitle = "Impressum - Axma Sicherheitsdienst";
+  const siteUrl = "https://[ВАШ_БУДУЩИЙ_ДОМЕН].de/impressum";
+
   return (
     <>
       <Head>
-        <title>Impressum - Sicherheitsfirma Adlerauge</title>
-        <meta name="robots" content="noindex, follow" /> {/* Обычно не индексируют Impressum */}
+      <title>{pageTitle}</title>
+      <meta name="robots" content="noindex, follow" />
+      <link rel="canonical" href={siteUrl} />
       </Head>
       <Navbar />
       <main className="pt-24 pb-12 bg-brand-lightGray min-h-screen"> {/* pt-24 чтобы контент не уезжал под Navbar и был отступ */}

@@ -88,7 +88,6 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
           <motion.div
             variants={logoVariants}
             initial="hidden"
@@ -98,7 +97,7 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
             <Link href="#home" className="flex items-center">
               <Image
                 src="/images/LogotipAxma.webp"
-                alt="Логотип"
+                alt="Axma Sicherheitsdienst Log"
                 width={80}
                 height={80}
                 className="object-contain"

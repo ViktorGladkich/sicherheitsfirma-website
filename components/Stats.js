@@ -70,7 +70,7 @@ const Stats = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-brand-navy">
+    <section className="py-16 sm:py-20 text-white animated-hero-gradient">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={sectionRef}

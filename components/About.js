@@ -1,36 +1,30 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import AccordionItem from "./AccordionItem";
+import AccordionItem from './AccordionItem';
 
 const aboutImageUrl = "/images/security-team.png";
 const unsereWerteData = [
   {
     title: "Professionalität",
-    content:
-      "Höchste Standards in Ausbildung und Durchführung aller unserer Sicherheitsdienstleistungen. Regelmäßige Schulungen und Zertifizierungen unserer Mitarbeiter sind für uns selbstverständlich.",
+    content: "Höchste Standards in Ausbildung und Durchführung aller unserer Sicherheitsdienstleistungen. Regelmäßige Schulungen und Zertifizierungen unserer Mitarbeiter sind für uns selbstverständlich."
   },
   {
     title: "Integrität",
-    content:
-      "Ehrliches, ethisches und transparentes Handeln bildet die Grundlage unserer Beziehungen zu Kunden, Mitarbeitern und Partnern. Auf uns können Sie sich verlassen.",
+    content: "Ehrliches, ethisches und transparentes Handeln bildet die Grundlage unserer Beziehungen zu Kunden, Mitarbeitern und Partnern. Auf uns können Sie sich verlassen."
   },
   {
     title: "Zuverlässigkeit",
-    content:
-      "Wir sind da, wenn Sie uns brauchen – 24 Stunden am Tag, 7 Tage die Woche. Pünktlichkeit, Engagement und die konsequente Einhaltung von Absprachen zeichnen uns aus.",
+    content: "Wir sind da, wenn Sie uns brauchen – 24 Stunden am Tag, 7 Tage die Woche. Pünktlichkeit, Engagement und die konsequente Einhaltung von Absprachen zeichnen uns aus."
   },
   {
     title: "Diskretion",
-    content:
-      "Vertraulichkeit und der Schutz Ihrer Privatsphäre sowie sensibler Informationen sind für uns von höchster Bedeutung in allen Aspekтах unserer Arbeit.",
+    content: "Vertraulichkeit und der Schutz Ihrer Privatsphäre sowie sensibler Informationen sind für uns von höchster Bedeutung in allen Aspekтах unserer Arbeit."
   },
   {
     title: "Innovation",
-    content:
-      "Stetige Anpassung an neue Sicherheitsherausforderungen durch den Einsatz moderner Technologien und die kontinuierliche Weiterentwicklung unserer Methoden und Prozesse.",
-  },
+    content: "Stetige Anpassung an neue Sicherheitsherausforderungen durch den Einsatz moderner Technologien und die kontinuierliche Weiterentwicklung unserer Methoden und Prozesse."
+  }
 ];
 
 const About = () => {
@@ -67,12 +61,11 @@ const About = () => {
       opacity: 1,
       x: 0,
       filter: "blur(0px)",
-      transition: {
-        default: { type: "spring", stiffness: 90, damping: 16 },
-        filter: { duration: 0.5, ease: "easeOut" },
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
+      transition: { 
+        default: { type: "spring", stiffness: 90, damping: 16 }, 
+        filter: { duration: 0.5, ease: "easeOut" },          
+        staggerChildren: 0.15, delayChildren: 0.1 
+      }
     },
   };
   const innerContentItemVariants = {
@@ -100,6 +93,7 @@ const About = () => {
       transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 },
     },
   };
+
 
   // --- Логика для Scroll-linked анимации линии ---
   const sectionHeaderRef = useRef(null);
@@ -207,21 +201,10 @@ const About = () => {
               >
                 Unsere Werte
               </motion.h3>
-              <motion.div
-                variants={innerContentItemVariants}
-                className="space-y-1"
-              >
+              <motion.div variants={innerContentItemVariants} className="space-y-1"> 
                 {unsereWerteData.map((wert, index) => (
-                  <AccordionItem
-                    key={index}
-                    title={wert.title}
-                    initiallyOpen={index === 0}
-                  >
-                    {" "}
-                    {/* Первый элемент открыт по умолчанию */}
-                    <p className="text-sm text-brand-darkGray py-2">
-                      {" "}
-                      {/* Добавил padding для текста в аккордеоне */}
+                  <AccordionItem key={index} title={wert.title} initiallyOpen={index === 0}> {/* Первый элемент открыт по умолчанию */}
+                    <p className="text-sm text-brand-darkGray py-2"> {/* Добавил padding для текста в аккордеоне */}
                       {wert.content}
                     </p>
                   </AccordionItem>

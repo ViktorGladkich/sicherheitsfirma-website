@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/ 
 
-Sitemap: https://[ВАШ_БУДУЩИЙ_ДОМЕН]/sitemap.xml 
+Sitemap: https://[ВАШ_ФИНАЛЬНЫЙ_ДОМЕН]/sitemap.xml 

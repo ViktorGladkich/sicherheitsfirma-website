@@ -17,7 +17,7 @@ const TestimonialCard = ({ name, role, text, avatar }) => {
         {avatar ? (
           <Image
             src={avatar}
-            alt={name}
+            alt={name || "Kundenavatar"}
             width={48}
             height={48}
             className="rounded-full mr-4 object-cover"

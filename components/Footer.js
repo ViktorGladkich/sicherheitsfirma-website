@@ -18,7 +18,7 @@ const Footer = () => {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 1, delay: 0.5 }} 
-      className="bg-brand-navy text-gray-400 py-10 sm:py-12" 
+      className="bg-brand-navy text-gray-400 py-10 sm:py-12 animated-hero-gradient" 
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p className="mb-4 text-sm">
