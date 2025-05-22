@@ -23,9 +23,9 @@ export default function ImpressumPage() {
             <section>
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Angaben gemäß § 5 TMG:</h2>
               <p>
-                <strong>[Полное название вашей фирмы, включая правовую форму, например, Adlerauge Sicherheitsdienste GmbH]</strong><br />
-                [Улица и номер дома]<br />
-                [Почтовый индекс и город]<br />
+                <strong> AXMA Sicherheitsdienste </strong><br />
+                PragerStrasse 1<br />
+                01069 Dresden<br />
                 Deutschland
               </p>
             </section>
@@ -33,33 +33,32 @@ export default function ImpressumPage() {
             <section>
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Vertreten durch:</h2>
               <p>
-                [Имя и фамилия управляющего директора / представителя, например, Max Mustermann (Geschäftsführer)]
+              Max Mustermann (Geschäftsführer)
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Kontakt:</h2>
               <p>
-                Telefon: [Ваш контактный телефон, например, +49 (0) 123 456789-0]<br />
-                Telefax: [Ваш контактный факс, если есть, например, +49 (0) 123 456789-9]<br />
-                E-Mail: [Ваш контактный E-Mail, например, info@sicherheitsfirma-adlerauge.de]
+                Telefon:  +49 (0) 123 456789-0<br />
+                E-Mail: info@sicherheitsfirma-adlerauge.de
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Registereintrag:</h2>
               <p>
-                Eintragung im [Название реестра, обычно Handelsregister].<br />
-                Registergericht: [Название суда, где зарегистрирована фирма, например, Amtsgericht Berlin Charlottenburg]<br />
-                Registernummer: [Ваш регистрационный номер, например, HRB 123456 B]
+                Eintragung im  Handelsregister.<br />
+                Registergericht:  Amtsgericht Berlin Charlottenburg<br />
+                Registernummer:  HRB 123456 B
               </p>
             </section>
 
             <section>
-              {/* Этот раздел нужен, если ваша деятельность требует лицензии или разрешения */}
+              {/* Этот раздел нужен, если деятельность требует лицензии или разрешения */}
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Zuständige Aufsichtsbehörde (falls zutreffend):</h2>
               <p>
-                [Название и адрес компетентного надзорного органа, например, Gewerbeamt Bezirk Musterstadt]<br />
+               Gewerbeamt Bezirk Musterstadt<br />
                 [Лицензия согласно §34a GewO, если применимо]
               </p>
             </section>
@@ -68,7 +67,7 @@ export default function ImpressumPage() {
               <h2 className="text-2xl font-semibold text-brand-blue mb-3">Umsatzsteuer-ID:</h2>
               <p>
                 Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br />
-                DE[Ваш номер плательщика НДС]
+                DE [номер плательщика НДС]
               </p>
             </section>
             

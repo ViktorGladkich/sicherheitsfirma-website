@@ -1,39 +1,35 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import AccordionItem from './AccordionItem';
+import AccordionItem from './AccordionItem'; 
+import { unsereWerteData } from "../data/werteData"; 
+import {
+  CheckCircleIcon as DefaultAccordionIcon, 
+  ShieldCheckIcon,
+  LightBulbIcon,
+  UsersIcon,
+  HandThumbUpIcon,
+  SparklesIcon, 
+} from "@heroicons/react/24/solid";
+
+const werteIconMap = {
+  Professionalität: ShieldCheckIcon,
+  Integrität: SparklesIcon,
+  Zuverlässigkeit: UsersIcon,
+  Diskretion: HandThumbUpIcon,
+  Innovation: LightBulbIcon,
+};
 
 const aboutImageUrl = "/images/security-team.png";
-const unsereWerteData = [
-  {
-    title: "Professionalität",
-    content: "Höchste Standards in Ausbildung und Durchführung aller unserer Sicherheitsdienstleistungen. Regelmäßige Schulungen und Zertifizierungen unserer Mitarbeiter sind für uns selbstverständlich."
-  },
-  {
-    title: "Integrität",
-    content: "Ehrliches, ethisches und transparentes Handeln bildet die Grundlage unserer Beziehungen zu Kunden, Mitarbeitern und Partnern. Auf uns können Sie sich verlassen."
-  },
-  {
-    title: "Zuverlässigkeit",
-    content: "Wir sind da, wenn Sie uns brauchen – 24 Stunden am Tag, 7 Tage die Woche. Pünktlichkeit, Engagement und die konsequente Einhaltung von Absprachen zeichnen uns aus."
-  },
-  {
-    title: "Diskretion",
-    content: "Vertraulichkeit und der Schutz Ihrer Privatsphäre sowie sensibler Informationen sind für uns von höchster Bedeutung in allen Aspekтах unserer Arbeit."
-  },
-  {
-    title: "Innovation",
-    content: "Stetige Anpassung an neue Sicherheitsherausforderungen durch den Einsatz moderner Technologien und die kontinuierliche Weiterentwicklung unserer Methoden und Prozesse."
-  }
-];
+
 
 const About = () => {
+  // --- VARIANTS АНИМАЦИЙ ---
   const sectionHeadingVariants = {
     hidden: { opacity: 0, y: -30 },
     visible: {
       opacity: 1,
       y: 0,
-      transform: "skewX(0deg)",
       transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 },
     },
   };
@@ -45,13 +41,13 @@ const About = () => {
       transition: { duration: 0.6, ease: "easeOut", delay: 0.25 },
     },
   };
-  const leftTextColumnVariants = {
+  const leftTextColumnVariants = { 
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.25,
-        delayChildren: 0.2,
+        staggerChildren: 0.25, 
+        delayChildren: 0.2,  
       },
     },
   };
@@ -64,11 +60,12 @@ const About = () => {
       transition: { 
         default: { type: "spring", stiffness: 90, damping: 16 }, 
         filter: { duration: 0.5, ease: "easeOut" },          
-        staggerChildren: 0.15, delayChildren: 0.1 
+        staggerChildren: 0.15, 
+        delayChildren: 0.1   
       }
     },
   };
-  const innerContentItemVariants = {
+  const innerContentItemVariants = { 
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: {
       opacity: 1,
@@ -77,7 +74,7 @@ const About = () => {
       transition: { duration: 0.5, ease: "circOut" },
     },
   };
-  const imageVariants = {
+  const imageVariants = { 
     hidden: {
       opacity: 0,
       scale: 0.85,
@@ -94,12 +91,11 @@ const About = () => {
     },
   };
 
-
-  // --- Логика для Scroll-linked анимации линии ---
+  // --- Логика для Scroll-linked анимации линии под заголовком секции ---
   const sectionHeaderRef = useRef(null);
   const { scrollYProgress: lineScrollYProgress } = useScroll({
     target: sectionHeaderRef,
-    offset: ["start 0.85", "start 0.1"],
+    offset: ["start 0.85", "start 0.1"], 
   });
   const pathLength = useTransform(lineScrollYProgress, [0, 1], [0, 1]);
   const opacityLine = useTransform(
@@ -111,6 +107,7 @@ const About = () => {
   return (
     <section id="about" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* --- Заголовок секции "Wer wir sind" --- */}
         <div
           ref={sectionHeaderRef}
           className="text-center mb-14 sm:mb-16 relative"
@@ -120,7 +117,7 @@ const About = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ amount: 0.3 }}
-            style={{ transform: "skewX(-5deg)" }}
+            style={{ transform: "skewX(-5deg)" }} 
             className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-4"
           >
             Wer wir sind: Ihr Partner für Sicherheit
@@ -158,7 +155,9 @@ const About = () => {
           </motion.p>
         </div>
 
+        
         <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+          {/* Левая колонка */}
           <motion.div
             variants={leftTextColumnVariants}
             initial="hidden"
@@ -168,8 +167,7 @@ const About = () => {
             {/* Подсекция: Наша Миссия */}
             <motion.div
               variants={contentSubSectionVariants}
-              style={{ filter: "blur(4px)" }}
-              className="mb-8"
+              className="mb-8" 
             >
               <motion.h3
                 variants={innerContentItemVariants}
@@ -179,7 +177,7 @@ const About = () => {
               </motion.h3>
               <motion.p
                 variants={innerContentItemVariants}
-                className="text-darkGray leading-relaxed"
+                className="text-darkGray leading-relaxed break-words"
               >
                 Unsere Mission ist es, durch proaktive Sicherheitsmaßnahmen und
                 den Einsatz modernster Technologien ein Höchstmaß an Sicherheit
@@ -192,8 +190,7 @@ const About = () => {
             {/* Подсекция: Наши Ценности */}
             <motion.div
               variants={contentSubSectionVariants}
-              style={{ filter: "blur(4px)" }}
-              className="mb-8"
+              className="mb-8 md:mb-0" 
             >
               <motion.h3
                 variants={innerContentItemVariants}
@@ -201,19 +198,35 @@ const About = () => {
               >
                 Unsere Werte
               </motion.h3>
-              <motion.div variants={innerContentItemVariants} className="space-y-1"> 
-                {unsereWerteData.map((wert, index) => (
-                  <AccordionItem key={index} title={wert.title} initiallyOpen={index === 0}> {/* Первый элемент открыт по умолчанию */}
-                    <p className="text-sm text-brand-darkGray py-2"> {/* Добавил padding для текста в аккордеоне */}
-                      {wert.content}
-                    </p>
-                  </AccordionItem>
-                ))}
+              <motion.div variants={innerContentItemVariants} className="space-y-3"> 
+                {unsereWerteData.map((wert, index) => {
+                  const IconComponent = werteIconMap[wert.title] || DefaultAccordionIcon;
+                  return (
+                    <div key={index} className="flex items-start space-x-3 py-1">
+                      <div className="w-8 h-8 rounded-full bg-brand-teal/10 flex items-center justify-center flex-shrink-0 mt-3.5"> 
+                        <IconComponent 
+                          className="h-5 w-5 text-brand-teal"
+                          aria-hidden="true" 
+                        />
+                      </div>
+                      <div className="flex-grow min-w-0">
+                        <AccordionItem 
+                          title={wert.title} 
+                          initiallyOpen={index === 0} 
+                        >
+                          <p className="text-sm text-brand-darkGray py-2 break-words">
+                            {wert.content}
+                          </p>
+                        </AccordionItem>
+                      </div>
+                    </div>
+                  );
+                })}
               </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Правая часть: Изображение */}
+          {/* Правая колонка: Изображение с текстом */}
           <motion.div
             variants={imageVariants}
             initial="hidden"
@@ -227,8 +240,18 @@ const About = () => {
               fill
               style={{ objectFit: "cover" }}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
-              priority={false}
+              priority={false} 
             />
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-black/70 via-black/40 to-transparent text-white"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }} 
+              viewport={{ }} 
+            >
+              <h4 className="text-lg sm:text-xl font-semibold mb-1">Unser Team – Ihre Sicherheit</h4>
+              <p className="text-xs sm:text-sm">Professionell. Diskret. Zuverlässig.</p>
+            </motion.div>
           </motion.div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
-const AccordionItem = ({ title, children, initiallyOpen = false }) => {
+const AccordionItem = ({ title, icon: Icon, children, initiallyOpen = false }) => {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
 
   const contentVariants = {
@@ -30,7 +30,7 @@ const AccordionItem = ({ title, children, initiallyOpen = false }) => {
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ChevronDownIcon className="w-5 h-5 text-brand-teal" />
+          <ChevronDownIcon className="w-7 h-7 text-brand-teal" />
         </motion.div>
       </motion.button>
       <AnimatePresence initial={false}>

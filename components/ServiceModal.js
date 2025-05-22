@@ -88,13 +88,6 @@ const detailListItemContentVariants = {
 const ServiceModal = ({ service, onClose }) => {
   if (!service) return null;
 
-  const iconMap = {
-    ClockIcon,
-    DetailVideoIcon,
-    DetailUsersIcon,
-    ListBulletIcon,
-  };
-
   const renderDetailContent = (item, index) => {
     if (typeof item === "string") {
       return item.split("\n").map(
@@ -125,10 +118,7 @@ const ServiceModal = ({ service, onClose }) => {
           </motion.h4>
         );
       case "listItem":
-        const IconComponent =
-          typeof item.icon === "function"
-            ? item.icon
-            : iconMap[item.icon] || DefaultDetailIcon;
+        const IconComponent = item.icon || DefaultDetailIcon;
         return (
           <motion.div
             key={index}

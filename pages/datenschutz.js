@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 export default function DatenschutzPage() {
   const pageTitle = "Datenschutzerklärung - Axma Sicherheitsdienst";
-  const siteUrl = "https://[ВАШ_БУДУЩИЙ_ДОМЕН].de/datenschutz";
+  const siteUrl = "https://sicherheitsfirma-website.vercel.app/datenschutz";
   return (
     <>
       <Head>

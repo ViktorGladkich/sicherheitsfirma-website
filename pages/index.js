@@ -1,4 +1,3 @@
-// pages/index.js
 import Head from "next/head";
 import { useState, useEffect, useCallback } from "react"; // Добавил useCallback
 
@@ -28,6 +27,7 @@ const SECTION_DEFINITIONS = [
 ];
 
 export default function HomePage() {
+  
   const siteTitle =
     "Axma Sicherheitsdienst - Ihr Partner für Sicherheit in Dresden";
   const siteDescription =

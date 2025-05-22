@@ -22,7 +22,7 @@ const Footer = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p className="mb-4 text-sm">
-          Sicherheitsfirma Adlerauge © {currentYear}. Alle Rechte vorbehalten.
+          Sicherheitsfirma AXMA © {currentYear}. Alle Rechte vorbehalten.
         </p>
         <div className="space-x-6">
           <motion.a 
