@@ -17,7 +17,7 @@ export default function ImpressumPage() {
       <Navbar />
       <main className="pt-24 pb-12 bg-brand-lightGray min-h-screen"> {/* pt-24 чтобы контент не уезжал под Navbar и был отступ */}
         <div className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-white shadow-lg rounded-lg">
-          <h1 className="text-4xl font-extrabold text-brand-blue mb-8 border-b pb-4">Impressum</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-brand-blue mb-8 border-b pb-4 break-words">Impressum</h1>
           
           <div className="space-y-6 text-brand-darkGray leading-relaxed">
             <section>

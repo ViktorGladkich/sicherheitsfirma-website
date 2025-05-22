@@ -12,7 +12,6 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
 
   const isHomePage = router.pathname === "/";
 
-  // navItems с динамическим href в зависимости от страницы
   const navItems = [
     { id: "home", name: "Startseite", href: isHomePage ? "#home" : "/" },
     { id: "services", name: "Dienstleistungen", href: isHomePage ? "#services" : "/#services" },
@@ -39,7 +38,6 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
 
-  // --- Variants (как в вашем последнем рабочем коде) ---
   const navbarVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut", delay: 0.1 } }
@@ -61,7 +59,7 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
     hover: { color: "#2CA58D", transition: { duration: 0.15 } }
   };
   
-  // ВОЗВРАЩАЕМ ВАШИ ОРИГИНАЛЬНЫЕ ВАРИАНТЫ ДЛЯ МОБИЛЬНОГО МЕНЮ
+  
   const menuVariants = {
     open: { opacity: 1, x: 0, transition: { staggerChildren: 0.07, when: "beforeChildren", delayChildren: 0.1 }},
     closed: { opacity: 0, x: "-100%", transition: { when: "afterChildren" }}
@@ -77,12 +75,12 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
   // Общий обработчик кликов для навигации
   const handleNavClick = (item) => {
     if (isHomePage && onNavItemClick) {
-      onNavItemClick(item.id); // Для плавной прокрутки на главной
+      onNavItemClick(item.id); 
     } else {
-      router.push(item.href); // Для перехода на главную с якорем с других страниц
+      router.push(item.href);
     }
     if (isOpen) {
-      setIsOpen(false); // Закрываем мобильное меню
+      setIsOpen(false); 
     }
   };
 
@@ -129,19 +127,15 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
                   variants={navItemLiVariants}
                   whileHover="hover"
                 >
-                  {/* Используем Link напрямую, onClick на нем */}
                   <Link
                     href={item.href}
                     onClick={(e) => {
-                      // Предотвращаем стандартное поведение Link только если мы на главной,
-                      // чтобы не мешать переходу на якорь с других страниц.
-                      // Если onNavItemClick есть, он выполнит скролл.
                       if (isHomePage) {
                         e.preventDefault();
                       }
                       handleNavClick(item);
                     }}
-                    className="block" // Добавил для корректного клика на всю область
+                    className="block"
                   >
                     <motion.span
                       variants={navLinkTextVariants}
@@ -159,11 +153,10 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
             </motion.ul>
           </div>
 
-          {/* Hamburger Button (ваш SVG код) */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
-              className="focus:outline-none p-2 text-white" // Добавил text-white для цвета SVG
+              className="focus:outline-none p-2 text-white" 
               aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
             >
               <motion.svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" initial={false} animate={isOpen ? "opened" : "closed"} transition={{duration: 0.3}}>
@@ -176,19 +169,18 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
         </div>
       </div>
 
-      {/* Mobile Menu - ВОЗВРАЩАЕМ К ВАШЕЙ ИСХОДНОЙ РАБОЧЕЙ ВЕРСИИ */}
       <motion.div
-        className={`md:hidden ${isOpen ? "block" : "hidden"} bg-brand-navy border-t border-brand-blue`} // Оставляем ваш способ управления видимостью
+        className={`md:hidden ${isOpen ? "block" : "hidden"} bg-brand-navy border-t border-brand-blue`} 
         initial="closed"
         animate={isOpen ? "open" : "closed"}
-        variants={menuVariants} // Ваши оригинальные menuVariants
+        variants={menuVariants} 
       >
         <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navItems.map((item) => (
-            <motion.li key={item.id} variants={mobileNavItemVariants}> {/* Ваши оригинальные mobileNavItemVariants */}
+            <motion.li key={item.id} variants={mobileNavItemVariants}> 
               <Link
                 href={item.href}
-                onClick={(e) => { // Тот же обработчик, что и для десктопа
+                onClick={(e) => { 
                   if (isHomePage) {
                     e.preventDefault();
                   }

@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Preloader from '../components/Preloader';     
+import CookieConsentBanner from '../components/CookieConsentBanner'; // Убедитесь, что импорт есть
 
 function MyApp({ Component, pageProps, router }) {
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -14,19 +15,22 @@ function MyApp({ Component, pageProps, router }) {
   }, []);
 
   return (
-    <AnimatePresence mode="wait"> 
-      {isPageLoading ? (
-        <Preloader key="pageLoader" isLoadingPage={true} /> 
-      ) : (
-        <motion.div 
-          key="pageContent"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.1 } }} 
-        >
-          <Component {...pageProps} key={router.asPath} />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <> 
+      <AnimatePresence mode="wait"> 
+        {isPageLoading ? (
+          <Preloader key="pageLoader" isLoadingPage={true} /> 
+        ) : (
+          <motion.div 
+            key="pageContent"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.1 } }} 
+          >
+            <Component {...pageProps} key={router.asPath} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {!isPageLoading && <CookieConsentBanner />} 
+    </>
   );
 }
 

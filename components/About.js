@@ -212,7 +212,6 @@ const About = () => {
                       <div className="flex-grow min-w-0">
                         <AccordionItem 
                           title={wert.title} 
-                          initiallyOpen={index === 0} 
                         >
                           <p className="text-sm text-brand-darkGray py-2 break-words">
                             {wert.content}
