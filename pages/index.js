@@ -92,7 +92,7 @@ export default function HomePage() {
         const element = document.getElementById(hash);
         if (element) {
           const navbarHeight =
-            document.querySelector("nav")?.offsetHeight || 80; 
+            document.querySelector("nav")?.offsetHeight || 100; 
           const elementPosition =
             element.getBoundingClientRect().top + window.pageYOffset;
           const offsetPosition = elementPosition - navbarHeight - 20; 
@@ -110,7 +110,7 @@ export default function HomePage() {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      const navbarHeight = document.querySelector("nav")?.offsetHeight || 80;
+      const navbarHeight = document.querySelector("nav")?.offsetHeight || 100;
       const elementPosition =
         element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navbarHeight - 20;

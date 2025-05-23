@@ -72,15 +72,20 @@ const Navbar = ({ activeSectionId, onNavItemClick }) => {
 
   const isNavbarOpaque = scrolled || isOpen || !isHomePage;
 
-  // Общий обработчик кликов для навигации
   const handleNavClick = (item) => {
-    if (isHomePage && onNavItemClick) {
-      onNavItemClick(item.id); 
-    } else {
-      router.push(item.href);
-    }
+    const performNavigation = () => {
+      if (isHomePage && onNavItemClick) {
+        onNavItemClick(item.id);
+      } else {
+        router.push(item.href); 
+      }
+    };
+
     if (isOpen) {
-      setIsOpen(false); 
+      setIsOpen(false);
+      setTimeout(performNavigation, 300);
+    } else {
+      performNavigation(); 
     }
   };
 

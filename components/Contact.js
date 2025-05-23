@@ -1,4 +1,3 @@
-// components/Contact.js
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import {
@@ -15,7 +14,6 @@ import Link from "next/link";
 import Preloader from "../components/Preloader";
 
 const Contact = () => {
-  // Состояние для отслеживания статуса отправки формы
   const [formStatus, setFormStatus] = useState({
     isSending: false,
     message: "",
@@ -23,7 +21,6 @@ const Contact = () => {
   });
 
   const handleSubmit = async (event) => {
-    // Сделали handleSubmit асинхронным
     event.preventDefault();
     setFormStatus({
       isSending: true,
@@ -39,7 +36,6 @@ const Contact = () => {
 
     try {
       const response = await fetch("/api/contact", {
-        // Отправляем на наш API Route
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +43,7 @@ const Contact = () => {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json(); // Получаем JSON ответ от API
+      const result = await response.json();
 
       if (response.ok && result.success) {
         setFormStatus({
@@ -55,7 +51,7 @@ const Contact = () => {
           message: result.message,
           isError: false,
         });
-        event.target.reset(); // Очищаем форму при успехе
+        event.target.reset(); 
         setTimeout(
           () =>
             setFormStatus({ isSending: false, message: "", isError: false }),
@@ -81,7 +77,6 @@ const Contact = () => {
     }
   };
 
-  // --- Остальная часть вашего кода (refs, hooks, variants) без изменений ---
   const sectionHeaderRef = useRef(null);
   const { scrollYProgress: lineScrollYProgress } = useScroll({
     target: sectionHeaderRef,
@@ -208,115 +203,6 @@ const Contact = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-stretch">
-            {/* Контактная информация и Аккордеон (ЛЕВЫЙ БЛОК) - ВАШ КОД ЗДЕСЬ СОХРАНЕН */}
-            <motion.div
-              variants={contactInfoBlockVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ amount: 0.1 }}
-              className="flex flex-col bg-brand-navy p-6 sm:p-8 rounded-xl shadow-xl text-white"
-            >
-              <motion.h3
-                variants={leftBlockItemVariants} // Анимация для этого заголовка
-                className="text-2xl lg:text-3xl font-semibold text-brand-teal mb-6"
-              >
-                Sicherheitsfirma Adlerauge
-              </motion.h3>
-
-              <motion.div // Контейнер для основных контактов
-                variants={leftBlockItemVariants} // Анимация для этого блока
-                className="space-y-5 mb-8"
-              >
-                <div className="flex items-start">
-                  <MapPinIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
-                  <div>
-                    <p className="text-gray-100 font-semibold text-lg">
-                      Standort
-                    </p>
-                    <p className="text-brand-gray leading-snug">
-                      Musterstraße 123
-                      <br />
-                      10115 Berlin, Deutschland
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <PhoneIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
-                  <div>
-                    <p className="text-gray-100 font-semibold text-lg">
-                      Rufen Sie uns an
-                    </p>
-                    <a
-                      href="tel:+491234567890"
-                      className="text-brand-gray hover:text-brand-teal transition-colors block hover:underline"
-                    >
-                      +49 (0) 123 456 7890
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <EnvelopeIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
-                  <div>
-                    <p className="text-gray-100 font-semibold text-lg">
-                      Schreiben Sie uns
-                    </p>
-                    <a
-                      href="mailto:info@sicherheitsfirma-adlerauge.de"
-                      className="text-brand-gray hover:text-brand-teal transition-colors block hover:underline"
-                    >
-                      info@sicherheitsfirma-adlerauge.de
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Аккордеон */}
-              <motion.div
-                variants={leftBlockItemVariants} // Анимация для всего блока аккордеона
-                className="space-y-px mt-auto"
-              >
-                <AccordionItem title="Unsere Öffnungszeiten">
-                  <p className="text-sm pt-2 pb-1">
-                    Montag - Freitag: 08:00 - 18:00 Uhr
-                  </p>
-                  <p className="text-sm pb-1">
-                    Samstag: 09:00 - 13:00 Uhr (Notdienst erreichbar)
-                  </p>
-                  <p className="text-sm pb-1">
-                    Sonntag & Feiertage: Notdienst 24/7 erreichbar
-                  </p>
-                </AccordionItem>
-                <AccordionItem title="Antwortprozess">
-                  <p className="text-sm pt-2 pb-1">
-                    Wir bemühen uns, alle Anfragen schnellstmöglich zu
-                    bearbeiten. In der Regel erhalten Sie eine Antwort innerhalb
-                    von 24 Stunden an Werktagen. Für dringende Fälle nutzen Sie
-                    bitte unsere Notrufnummer.
-                  </p>
-                </AccordionItem>
-                <AccordionItem title="Datenschutzhinweis">
-                  <div className="text-sm pt-2 pb-1 space-y-2 text-brand-gray">
-                    <p>
-                      Ihre Daten, die Sie uns über das Kontaktformular oder per
-                      E-Mail übermitteln, werden ausschließlich zur Bearbeitung
-                      Ihrer Anfrage und für mögliche Anschlussfragen verwendet.
-                    </p>
-                    <p>
-                      Weitere Informationen zum Umgang mit Ihren persönlichen
-                      Daten und Ihren Rechten finden Sie in unserer{" "}
-                      <Link
-                        href="/datenschutz"
-                        className="text-brand-teal hover:underline"
-                      >
-                        Datenschutzerklärung
-                      </Link>
-                      .
-                    </p>
-                  </div>
-                </AccordionItem>
-              </motion.div>
-            </motion.div>
-
             {/* Форма обратной связи (ПРАВЫЙ БЛОК) - с изменениями для отправки */}
             <motion.form
               onSubmit={handleSubmit}
@@ -415,9 +301,9 @@ const Contact = () => {
               <motion.div variants={formItemVariants} className="mt-auto">
                 <motion.button
                   type="submit"
-                  disabled={formStatus.isSending} // Кнопка блокируется во время отправки
+                  disabled={formStatus.isSending} 
                   whileHover={
-                    !formStatus.isSending // Hover эффект только если не отправляется
+                    !formStatus.isSending 
                       ? {
                           scale: 1.05,
                           backgroundColor: "#258A74",
@@ -429,13 +315,12 @@ const Contact = () => {
                   transition={{ duration: 0.2 }}
                   className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-brand-teal focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-teal focus:ring-offset-brand-navy disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {/* Текст кнопки теперь всегда одинаковый */}
                   Nachricht Senden
                 </motion.button>
                 {/* Сообщение о статусе ПОСЛЕ отправки (когда isSending === false) */}
                 {!formStatus.isSending && formStatus.message && (
                   <motion.p
-                    key={formStatus.message} // Добавил key для пере-анимации при смене сообщения
+                    key={formStatus.message} 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 5, transition: { duration: 0.2 } }}
@@ -446,6 +331,116 @@ const Contact = () => {
                 )}
               </motion.div>
             </motion.form>
+            {/* Контактная информация и Аккордеон (ЛЕВЫЙ БЛОК) - ВАШ КОД ЗДЕСЬ СОХРАНЕН */}
+            <motion.div
+              variants={contactInfoBlockVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.1 }}
+              className="flex flex-col bg-brand-navy p-6 sm:p-8 rounded-xl shadow-xl text-white"
+            >
+              <motion.h3
+                variants={leftBlockItemVariants} 
+                className="text-2xl lg:text-3xl font-semibold text-brand-teal mb-6"
+              >
+                Sicherheitsfirma AXMA
+              </motion.h3>
+
+              <motion.div 
+                variants={leftBlockItemVariants} 
+                className="space-y-5 mb-8"
+              >
+                <div className="flex items-start">
+                  <MapPinIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="text-gray-100 font-semibold text-lg">
+                      Standort
+                    </p>
+                    <p className="text-brand-gray leading-snug">
+                      Musterstraße 123
+                      <br />
+                      10115 Berlin, Deutschland
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <PhoneIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="text-gray-100 font-semibold text-lg">
+                      Rufen Sie uns an
+                    </p>
+                    <a
+                      href="tel:+491234567890"
+                      className="text-brand-gray hover:text-brand-teal transition-colors block hover:underline"
+                    >
+                      +49 (0) 123 456 7890
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <EnvelopeIcon className="h-7 w-7 text-brand-teal mr-4 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="text-gray-100 font-semibold text-lg">
+                      Schreiben Sie uns
+                    </p>
+                    <a
+                      href="mailto:info@sicherheitsfirma-adlerauge.de"
+                      className="text-brand-gray hover:text-brand-teal transition-colors block hover:underline"
+                    >
+                      info@sicherheitsfirma-adlerauge.de
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Аккордеон */}
+              <motion.div
+                variants={leftBlockItemVariants} 
+                className="space-y-px mt-auto"
+              >
+                <AccordionItem title="Unsere Öffnungszeiten">
+                  <p className="text-sm pt-2 pb-1">
+                    Montag - Freitag: 08:00 - 18:00 Uhr
+                  </p>
+                  <p className="text-sm pb-1">
+                    Samstag: 09:00 - 13:00 Uhr (Notdienst erreichbar)
+                  </p>
+                  <p className="text-sm pb-1">
+                    Sonntag & Feiertage: Notdienst 24/7 erreichbar
+                  </p>
+                </AccordionItem>
+                <AccordionItem title="Antwortprozess">
+                  <p className="text-sm pt-2 pb-1">
+                    Wir bemühen uns, alle Anfragen schnellstmöglich zu
+                    bearbeiten. In der Regel erhalten Sie eine Antwort innerhalb
+                    von 24 Stunden an Werktagen. Für dringende Fälle nutzen Sie
+                    bitte unsere Notrufnummer.
+                  </p>
+                </AccordionItem>
+                <AccordionItem title="Datenschutzhinweis">
+                  <div className="text-sm pt-2 pb-1 space-y-2 text-brand-gray">
+                    <p>
+                      Ihre Daten, die Sie uns über das Kontaktformular oder per
+                      E-Mail übermitteln, werden ausschließlich zur Bearbeitung
+                      Ihrer Anfrage und für mögliche Anschlussfragen verwendet.
+                    </p>
+                    <p>
+                      Weitere Informationen zum Umgang mit Ihren persönlichen
+                      Daten und Ihren Rechten finden Sie in unserer{" "}
+                      <Link
+                        href="/datenschutz"
+                        className="text-brand-teal hover:underline"
+                      >
+                        Datenschutzerklärung
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                </AccordionItem>
+              </motion.div>
+            </motion.div>
+
+            
           </div>
         </div>
       </section>
