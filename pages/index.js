@@ -33,7 +33,7 @@ export default function HomePage() {
   const siteDescription =
     "Professionelle Sicherheitslösungen von Axma: Objektschutz, Veranstaltungsschutz, Personenschutz und mehr. Vertrauen Sie auf Erfahrung und Kompetenz für Ihre Sicherheit.";
   const siteUrl = "https://sicherheitsfirma-website.vercel.app";
-  const siteImage = `${siteUrl}/images/2.png`;
+  const siteImage = `${siteUrl}/images/LogotipAxma.webp`;
 
   const [activeSection, setActiveSection] = useState(
     SECTION_DEFINITIONS[0]?.id || ""
